@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="DBldgModelStoreContainer" CdmEntityContainer="DBldgEntities">
+    <EntitySetMapping Name="ATLETA">
+      <EntityTypeMapping TypeName="DBldgModel.ATLETA">
+        <MappingFragment StoreEntitySet="ATLETA">
+          <ScalarProperty Name="NOMECOMPLETO" ColumnName="NOMECOMPLETO" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="NOME" ColumnName="NOME" />
+          <ScalarProperty Name="COGNOME" ColumnName="COGNOME" />
+          <ScalarProperty Name="ALTEZZA" ColumnName="ALTEZZA" />
+          <ScalarProperty Name="PESO" ColumnName="PESO" />
+          <ScalarProperty Name="RUOLO" ColumnName="RUOLO" />
+          <ScalarProperty Name="CATEGORIA" ColumnName="CATEGORIA" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="CATEGORIA">
+      <EntityTypeMapping TypeName="DBldgModel.CATEGORIA">
+        <MappingFragment StoreEntitySet="CATEGORIA">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="CATEGORIA1" ColumnName="CATEGORIA" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="VIDEO">
+      <EntityTypeMapping TypeName="DBldgModel.VIDEO">
+        <MappingFragment StoreEntitySet="VIDEO">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="VIDEO1" ColumnName="VIDEO" />
+          <ScalarProperty Name="URL" ColumnName="URL" />
+          <ScalarProperty Name="TIPO" ColumnName="TIPO" />
+          <ScalarProperty Name="DATA" ColumnName="DATA" />
+          <ScalarProperty Name="CATEGORIA" ColumnName="CATEGORIA" />
+          <ScalarProperty Name="ANNO" ColumnName="ANNO" />
+          <ScalarProperty Name="MESE" ColumnName="MESE" />
+          <ScalarProperty Name="ATLETA" ColumnName="ATLETA" />
+          <ScalarProperty Name="AVVERSARIO" ColumnName="AVVERSARIO" />
+          <ScalarProperty Name="NOTE" ColumnName="NOTE" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

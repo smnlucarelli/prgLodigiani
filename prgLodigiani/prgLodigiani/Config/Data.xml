@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<config>
+  <!--<DB>
+	  <DB_Datasource>GIANMARCOLIFE5B\MSSQLSTD2017</DB_Datasource>
+	  <DB_Catalog>DBldg</DB_Catalog>
+	  <DB_User>GIANMARCOLIFE5B\gianmarcolilli</DB_User>
+	  <DB_Psw>9999</DB_Psw>
+  </DB>-->
+  <DB>
+    <DB_Datasource>NB06\SQLSTD2017</DB_Datasource>
+    <DB_Catalog>DBldg</DB_Catalog>
+    <DB_User>sa</DB_User>
+    <DB_Psw>9999</DB_Psw>
+  </DB>
+</config>

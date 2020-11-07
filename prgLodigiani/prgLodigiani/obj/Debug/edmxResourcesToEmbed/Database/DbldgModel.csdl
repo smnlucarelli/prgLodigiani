@@ -1,0 +1,98 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="DBldgModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="ATLETA">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="NOME" Type="String" MaxLength="25" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="COGNOME" Type="String" MaxLength="25" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="ALTEZZA" Type="Int32" />
+    <Property Name="PESO" Type="Double" />
+    <Property Name="RUOLO" Type="String" MaxLength="16" FixedLength="true" Unicode="true" />
+    <Property Name="CATEGORIA" Type="String" MaxLength="50" FixedLength="true" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="CATEGORIA1" Relationship="Self.FK_ATLETA_CATEGORIA" FromRole="ATLETA" ToRole="CATEGORIA" />
+    <NavigationProperty Name="VIDEO" Relationship="Self.FK_VIDEO_ATLETA" FromRole="ATLETA" ToRole="VIDEO" />
+    <Property Name="NOMECOMPLETO" Type="String" Nullable="false" MaxLength="50" FixedLength="true" Unicode="true" />
+  </EntityType>
+  <EntityType Name="CATEGORIA">
+    <Key>
+      <PropertyRef Name="CATEGORIA1" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="CATEGORIA1" Type="String" MaxLength="50" FixedLength="true" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="ATLETA" Relationship="Self.FK_ATLETA_CATEGORIA" FromRole="CATEGORIA" ToRole="ATLETA" />
+    <NavigationProperty Name="VIDEO" Relationship="Self.FK_VIDEO_CATEGORIA" FromRole="CATEGORIA" ToRole="VIDEO" />
+  </EntityType>
+  <EntityType Name="VIDEO">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="VIDEO1" Type="String" MaxLength="50" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="URL" Type="String" MaxLength="150" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="TIPO" Type="String" MaxLength="30" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="DATA" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="CATEGORIA" Type="String" MaxLength="50" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="ANNO" Type="String" Nullable="false" MaxLength="10" Unicode="true" FixedLength="true" />
+    <Property Name="MESE" Type="String" MaxLength="30" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="ATLETA" Type="Int32" />
+    <Property Name="AVVERSARIO" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
+    <Property Name="NOTE" Type="String" MaxLength="500" FixedLength="true" Unicode="true" />
+    <NavigationProperty Name="ATLETA1" Relationship="Self.FK_VIDEO_ATLETA" FromRole="VIDEO" ToRole="ATLETA" />
+    <NavigationProperty Name="CATEGORIA1" Relationship="Self.FK_VIDEO_CATEGORIA" FromRole="VIDEO" ToRole="CATEGORIA" />
+  </EntityType>
+  <Association Name="FK_ATLETA_CATEGORIA">
+    <End Role="CATEGORIA" Type="Self.CATEGORIA" Multiplicity="1" />
+    <End Role="ATLETA" Type="Self.ATLETA" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CATEGORIA">
+        <PropertyRef Name="CATEGORIA1" />
+      </Principal>
+      <Dependent Role="ATLETA">
+        <PropertyRef Name="CATEGORIA" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_VIDEO_ATLETA">
+    <End Role="ATLETA" Type="Self.ATLETA" Multiplicity="0..1" />
+    <End Role="VIDEO" Type="Self.VIDEO" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ATLETA">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="VIDEO">
+        <PropertyRef Name="ATLETA" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_VIDEO_CATEGORIA">
+    <End Role="CATEGORIA" Type="Self.CATEGORIA" Multiplicity="1" />
+    <End Role="VIDEO" Type="Self.VIDEO" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CATEGORIA">
+        <PropertyRef Name="CATEGORIA1" />
+      </Principal>
+      <Dependent Role="VIDEO">
+        <PropertyRef Name="CATEGORIA" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="DBldgEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="ATLETA" EntityType="Self.ATLETA" />
+    <EntitySet Name="CATEGORIA" EntityType="Self.CATEGORIA" />
+    <EntitySet Name="VIDEO" EntityType="Self.VIDEO" />
+    <AssociationSet Name="FK_ATLETA_CATEGORIA" Association="Self.FK_ATLETA_CATEGORIA">
+      <End Role="CATEGORIA" EntitySet="CATEGORIA" />
+      <End Role="ATLETA" EntitySet="ATLETA" />
+    </AssociationSet>
+    <AssociationSet Name="FK_VIDEO_ATLETA" Association="Self.FK_VIDEO_ATLETA">
+      <End Role="ATLETA" EntitySet="ATLETA" />
+      <End Role="VIDEO" EntitySet="VIDEO" />
+    </AssociationSet>
+    <AssociationSet Name="FK_VIDEO_CATEGORIA" Association="Self.FK_VIDEO_CATEGORIA">
+      <End Role="CATEGORIA" EntitySet="CATEGORIA" />
+      <End Role="VIDEO" EntitySet="VIDEO" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

@@ -1,0 +1,920 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:prgLodigiani"
+        xmlns:materialDesign ="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:Classi="clr-namespace:prgLodigiani.Classi" x:Name="Main" x:Class="prgLodigiani.MainWindow"
+        mc:Ignorable="d"
+        
+        Title="LDG"
+        Height="835"
+        Width="1465"
+        ResizeMode="CanMinimize"
+        WindowStartupLocation="CenterScreen"
+        AllowsTransparency="True"
+        WindowState="Normal"
+        WindowStyle="None">
+
+
+    <!--Animazione apertura e chiusura menu sidebar-->
+    <Window.Resources>
+        <Storyboard x:Key="OpenSidebar">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Width)" Storyboard.TargetName="GridSidebar">
+                <EasingDoubleKeyFrame KeyTime="0" Value="70"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="280"/>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Key="CloseSidebar">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Width)" Storyboard.TargetName="GridSidebar">
+                <EasingDoubleKeyFrame KeyTime="0" Value="280"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="70"/>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+    </Window.Resources>
+    <Window.Triggers>
+        <EventTrigger RoutedEvent="ButtonBase.Click" SourceName="ButtonOpenSidebar">
+            <BeginStoryboard Storyboard="{StaticResource OpenSidebar}"/>
+        </EventTrigger>
+        <EventTrigger RoutedEvent="ButtonBase.Click" SourceName="ButtonCloseSidebar">
+            <BeginStoryboard Storyboard="{StaticResource CloseSidebar}"/>
+        </EventTrigger>
+    </Window.Triggers>
+
+    <!--Grid generale-->
+    <Grid Background="#FFE0E0E0">
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="70"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="20"/>
+        </Grid.RowDefinitions>
+
+        <!--Grid per la gestione del menu sidebar-->
+        <Grid x:Name="GridSidebar" Grid.Column="0" Background="#FF0D2432" Margin="0,0,0,0" Width="70" Grid.ColumnSpan="2" HorizontalAlignment="Left" Panel.ZIndex="5">
+            <StackPanel VerticalAlignment="Top" Margin="0,10,0,0" Panel.ZIndex="5">
+
+                <!--Animazione button apertura menu-->
+                <Grid Height="60" RenderTransformOrigin="0.5,0.5" Margin="0,0,0,0">
+                    <Grid.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform/>
+                            <SkewTransform/>
+                            <RotateTransform/>
+                            <TranslateTransform/>
+                        </TransformGroup>
+                    </Grid.RenderTransform>
+                    <Button x:Name="ButtonOpenSidebar" Visibility="Visible" Height="30" Width="60" Margin="0,1,5,0" HorizontalAlignment="Right" VerticalAlignment="Top" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="White" Click="ButtonOpenSidebar_Click">
+                        <materialDesign:PackIcon Kind="Menu" Width="25" Height="25"/>
+                    </Button>
+                    <Button x:Name="ButtonCloseSidebar" Visibility="Collapsed" Height="30" Width="60" Margin="0,1,5,0" HorizontalAlignment="Right" VerticalAlignment="Top" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="White" Click="ButtonCloseSidebar_Click">
+                        <materialDesign:PackIcon Kind="ArrowBack" Width="25" Height="25"/>
+                    </Button>
+                </Grid>
+
+                <!--Elementi del menu-->
+                <ListView x:Name="ListViewMenu" Foreground="#FF5C99D6" ScrollViewer.HorizontalScrollBarVisibility="Disabled" SelectionChanged="ListViewMenu_SelectionChanged" FontFamily="/Gesprod;component/Fonts/#Roboto Light">
+                    <ListViewItem x:Name="ItemHome" Height="60">
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="Home" Height="25" Width="35" Margin="10" Foreground="White" />
+                            <TextBlock Text="Home" VerticalAlignment="Center" Margin="20 10" Foreground="White" FontSize="18"/>
+                        </StackPanel>
+                    </ListViewItem>
+                    <ListViewItem x:Name="ItemCategorie" Height="60">
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="SoccerField" Height="25" Width="35" Margin="10" Foreground="White"/>
+                            <TextBlock Text="Gestione categorie" VerticalAlignment="Center" Margin="20 10" Foreground="White" FontSize="18"/>
+                        </StackPanel>
+                    </ListViewItem>
+                    <ListViewItem x:Name="ItemInserisciVideo" Height="60">
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="VideoCall" Height="25" Width="35" Margin="10" Foreground="White"/>
+                            <TextBlock Text="Inserisci video" VerticalAlignment="Center" Margin="20 10" Foreground="White" FontSize="18"/>
+                        </StackPanel>
+                    </ListViewItem>
+                    <ListViewItem x:Name="ItemRicercaVideo" Height="60">
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="Search" Height="25" Width="35" Margin="10" Foreground="White"/>
+                            <TextBlock Text="Ricerca video" VerticalAlignment="Center" Margin="20 10" Foreground="White" FontSize="18"/>
+                        </StackPanel>
+                    </ListViewItem>
+
+                    <ListViewItem x:Name="ItemUtenti" Height="60" IsEnabled="False">
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="User" Height="25" Width="35" Margin="10" Foreground="Gray"/>
+                            <TextBlock Text="Utenti (BETA)" VerticalAlignment="Center" Margin="20 10" Foreground="Gray" FontSize="18"/>
+                        </StackPanel>
+                    </ListViewItem>
+                </ListView>
+
+            </StackPanel>
+
+            <StackPanel VerticalAlignment="Bottom" Margin="0,0,0,10" Panel.ZIndex="5" Height="60" Grid.Row="4">
+                <ListViewItem x:Name="ItemImpostazioni" Height="60" IsEnabled="False">
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon Kind="Settings" Height="25" Width="35" Margin="10" Foreground="Gray"/>
+                        <TextBlock Text="Impostazioni (BETA)" VerticalAlignment="Center" Margin="20 10" Foreground="Gray" FontSize="18"/>
+                    </StackPanel>
+                </ListViewItem>
+
+            </StackPanel>
+
+        </Grid>
+
+        <!--Grid per la navigation bar-->
+        <Grid x:Name="GridNavBar" Grid.ColumnSpan="2" Background="#FF0D2432" MouseDown="GridNavBar_MouseDown" VerticalAlignment="Top" Height="50" Panel.ZIndex="-1" Margin="10,0,-10,0">
+
+            <!--<Grid.DataContext>
+                <class:LoginVM></class:LoginVM>
+            </Grid.DataContext>-->
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="10,0">
+
+                <!--<TextBlock x:Name="txtbUser" VerticalAlignment="Center" Foreground="White" />-->
+                <materialDesign:PopupBox HorizontalAlignment="Right" Margin="10,7" StaysOpen="False" Foreground="White" PlacementMode="BottomAndAlignRightEdges" IsEnabled="False">
+                    <StackPanel Width="150">
+                        <Button x:Name="BtnAccount" Content="Account"/>
+                        <Button x:Name="BtnHelp" Content="Help"/>
+                        <Separator/>
+                        <Button x:Name="BtnLogout" Content="Logout" Click="BtnLogout_Click"/>
+                    </StackPanel>
+                </materialDesign:PopupBox>
+
+                <!--<materialDesign:Chip
+                    Content="Utente" Foreground="White" Background="#12CACACA" IconBackground="#FFE2E2E2">
+                    <materialDesign:Chip.Icon>
+                        <materialDesign:PackIcon Kind="Account" Background="{x:Null}" Width="20" Height="20" ></materialDesign:PackIcon>
+                    </materialDesign:Chip.Icon>
+                </materialDesign:Chip>-->
+
+                <Button x:Name="BtnMin" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" Width="40" Height="40" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="White" Click="BtnMin_Click">
+                    <materialDesign:PackIcon Kind="WindowMinimize" Height="20" Width="20"/>
+                </Button>
+                <Button x:Name="BtnMax" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" Width="40" Height="40" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="White" Click="BtnMax_Click">
+                    <materialDesign:PackIcon Kind="WindowMaximize" Height="20" Width="20"/>
+                </Button>
+                <Button x:Name="BtnClose" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" Width="40" Height="40" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="White" Click="BtnClose_Click" AutomationProperties.HelpText="&quot;Chiudi&quot;">
+                    <materialDesign:PackIcon Kind="Close" Height="20" Width="20"/>
+                </Button>
+
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="95,0">
+                <Image Source="/logo_lodigiani.png" Width="40" Height="40" Margin="0,0,20   ,0"/>
+                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" FontSize="20"><Run Text="ASD LODIGIANI CALCIO 1972"/></TextBlock>
+            </StackPanel>
+
+
+        </Grid>
+
+        <!--Grid Home-->
+        <Grid x:Name="GridHome" Visibility="Collapsed" Grid.Column="1">
+
+            <Grid.DataContext>
+                <local:Squadre/>
+            </Grid.DataContext>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="400"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+
+            <!--Card relativa al logo e al nome della squadra-->
+            <materialDesign:Card Margin="20,80,20,20" Grid.Row="0">
+
+                <Grid>
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="350"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Column="0" Orientation="Horizontal" Margin="0,0,0,0">
+                        <Image Source="/logo_lodigiani.png" Width="200" Height="200" VerticalAlignment="Center" Margin="75,0,0,0" />
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="0,0,0,0">
+                        <TextBlock HorizontalAlignment="Center" Foreground="Black" FontSize="50" VerticalAlignment="Center" Margin="50,0,0,0"><Run Text="ASD LODIGIANI CALCIO 1972"/></TextBlock>
+                    </StackPanel>
+
+
+                </Grid>
+
+            </materialDesign:Card>
+
+            <!--KPI e menu rapido-->
+            <Grid Grid.Row="1">
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <!--Card KPI categorie gestite e atleti gestiti-->
+                <materialDesign:Card Margin="20,20,19.8,0" Grid.Row="0" Grid.Column="0" Height="367" VerticalAlignment="Top">
+
+                    <materialDesign:Card.DataContext>
+                        <local:Squadre/>
+                    </materialDesign:Card.DataContext>
+
+                    <StackPanel Orientation="Vertical">
+
+                        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="Black" FontSize="50" Margin="0,30,0,0" Text="{Binding TextCategorie}"/>
+                        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="Gray" FontSize="30" Margin="0"><Run Text="Categorie gestite"/></TextBlock>
+                        <Separator Margin="0,2,0,2" Height="83"/>
+                        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="Black" FontSize="50" Margin="0,0,0,0" Text="{Binding TextAtleti}"/>
+                        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="Gray" FontSize="30"><Run Text="Atleti inseriti"/></TextBlock>
+
+                    </StackPanel>
+
+
+                </materialDesign:Card>
+
+                <!--Card KPI video inseriti-->
+                <materialDesign:Card Margin="20.2,20,19.6,0" Grid.Row="0" Grid.Column="1" Height="367" VerticalAlignment="Top">
+
+                    <StackPanel Orientation="Vertical">
+
+                        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="Black" FontSize="70" Margin="0,120,0,0" Text="{Binding TextCategorie}"/>
+                        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="Gray" FontSize="30" Margin="0"><Run Text="Video inseriti"/></TextBlock>
+
+                    </StackPanel>
+
+
+                </materialDesign:Card>
+
+            </Grid>
+
+            <!--<materialDesign:Card Margin="20.2,20,19.6,0" Grid.Row="0" Grid.Column="2" Height="367" VerticalAlignment="Top"/>-->
+
+            <!--<materialDesign:Flipper Grid.Row="0" Grid.Column="2" Margin="27.5,20,25,27.5" Style="{StaticResource MaterialDesignCardFlipper}" VerticalAlignment="Top">
+                    <materialDesign:Flipper.FrontContent>
+                        <Grid Height="367" Width="auto">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <materialDesign:ColorZone Mode="PrimaryDark" VerticalAlignment="Stretch">
+                                <materialDesign:PackIcon  Kind="AccountCircle" Height="128" Width="128" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                            </materialDesign:ColorZone>
+                            <StackPanel Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <TextBlock FontSize="30"> User</TextBlock>
+                                <Button Style="{StaticResource MaterialDesignFlatButton}" Command="{x:Static materialDesign:Flipper.FlipCommand}" Margin="0 4 0 0">
+                                    Modifica
+                                </Button>
+                            </StackPanel>
+                        </Grid>
+                    </materialDesign:Flipper.FrontContent>
+                    <materialDesign:Flipper.BackContent>
+                        <Grid Height="256" Width="200">
+
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+
+                            <materialDesign:ColorZone Mode="Accent" Padding="6">
+                                <StackPanel Orientation="Horizontal">
+                                    <Button Style="{StaticResource MaterialDesignToolForegroundButton}" Command="{x:Static materialDesign:Flipper.FlipCommand}" HorizontalAlignment="Left">
+                                        <materialDesign:PackIcon Kind="ArrowLeft" HorizontalAlignment="Right" />
+                                    </Button>
+                                    <TextBlock Margin="8 0 0 0" VerticalAlignment="Center"> EDIT USER</TextBlock>
+                                </StackPanel>
+                            </materialDesign:ColorZone>
+                            <Grid Grid.Row="1" Margin="0 6 0 0" HorizontalAlignment="Center" VerticalAlignment="Top" Width="172">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
+                                <TextBox materialDesign:HintAssist.Hint="First name" materialDesign:HintAssist.IsFloating="True" Margin="0 12 0 0">
+                                    James
+                                </TextBox>
+                                <TextBox Grid.Row="1" materialDesign:HintAssist.Hint="Last name" materialDesign:HintAssist.IsFloating="True" Margin="0 12 0 0">
+                                    Willock
+                                </TextBox>
+                                <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0 12 0 0" HorizontalAlignment="Right">
+                                    <TextBlock VerticalAlignment="Center"> Email Contact
+                                    </TextBlock>
+                                    <ToggleButton Margin="8 0 0 0"></ToggleButton>
+                                </StackPanel>
+                                <StackPanel Grid.Row="3" Orientation="Horizontal" Margin="0 12 0 0" HorizontalAlignment="Right">
+                                    <TextBlock VerticalAlignment="Center"> Telephone Contact</TextBlock>
+                                    <ToggleButton Margin="8 0 0 0"></ToggleButton>
+                                </StackPanel>
+                            </Grid>
+                        </Grid>
+                    </materialDesign:Flipper.BackContent>
+                </materialDesign:Flipper>-->
+
+            <!--Menu rapido-->
+            <!--<Grid Margin="20.4,20,20.4,0" Grid.Row="0" Grid.Column="2" Height="367" VerticalAlignment="Top">
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <materialDesign:Card Margin="0,0,0,0" Grid.Row="0" Height="100" VerticalAlignment="Top" >
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="90"/>
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel Grid.Column="0" Orientation="Horizontal">
+                                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="Black" FontSize="25" Margin="15,0,0,0"><Run Text="Vai alla gestione categorie"/></TextBlock>
+                            </StackPanel>
+                            <StackPanel Grid.Column="1" Orientation="Horizontal" Panel.ZIndex="5">
+                                <materialDesign:PackIcon x:Name="bCategorieMR" Kind="ArrowRight" Height="Auto" Width="50" Margin="20,35" VerticalAlignment="Stretch" Foreground="#FF4FA4FD" Cursor="Hand" MouseDoubleClick="bCategorieMR_MouseDoubleClick" />
+                            </StackPanel>
+                        </Grid>
+                    </materialDesign:Card>
+
+                    <materialDesign:Card Margin="0,0,0,0" Grid.Row="1" Height="100">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="90"/>
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel Grid.Column="0" Orientation="Horizontal">
+                                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="Black" FontSize="25" Margin="15,0,0,0"><Run Text="Inserisci un nuovo video"/></TextBlock>
+                            </StackPanel>
+                            <StackPanel Grid.Column="1">
+                                <Button x:Name="bInserisciVideoMR" Background="#FF4FA4FD" BorderBrush="#FF4FA4FD" Click="bInserisciVideoMR_Click" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,34,10,34" Width="80">
+                                    <materialDesign:PackIcon Kind="ArrowRight" Height="30" Width="50" Margin="0,0,0,0" VerticalAlignment="Center" Foreground="White" />
+                                </Button>
+                            </StackPanel>
+                        </Grid>
+                    </materialDesign:Card>
+
+                    <materialDesign:Card Margin="0,0,0,0" Grid.Row="2" Height="100" VerticalAlignment="Bottom">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="70"/>
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel Grid.Column="0" Orientation="Horizontal">
+                                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="Black" FontSize="25" Margin="15,0,0,0"><Run Text="Ricerca un video caricato"/></TextBlock>
+                            </StackPanel>
+                            <StackPanel Grid.Column="1" Orientation="Horizontal">
+                                <Button x:Name="bRicercaVideoMR" Background="{x:Null}" BorderBrush="{x:Null}" Click="bRicercaVideoMR_Click">
+                                    <materialDesign:PackIcon Kind="ArrowRight" Height="40" Width="40" Margin="0,0,0,0" VerticalAlignment="Center" Foreground="#FF4FA4FD" />
+                                </Button>
+                            </StackPanel>
+                        </Grid>
+                    </materialDesign:Card>
+
+                </Grid>-->
+        </Grid>
+
+        <!--Grid Gestione categorie-->
+        <ScrollViewer Grid.Column="0" Grid.ColumnSpan="2" Margin="70,50,0,0">
+            <Grid x:Name="GridCategorie" Grid.Column="1" Margin="0,0,0,0" Visibility="Collapsed" Panel.ZIndex="0">
+                <!--Grid della tabella iniziale delle categorie-->
+                <Grid x:Name="gSelectCategoria" Visibility="Visible">
+
+                    <Grid.DataContext>
+                        <local:Squadre/>
+                    </Grid.DataContext>
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="50"/>
+                        <RowDefinition Height="250"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!--TextBox indirizzo funzione-->
+                    <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="20,10,20,10">
+                        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#FF606060" FontStyle="Italic"><Run Text="Gestione categorie"/></TextBlock>
+                    </StackPanel>
+
+                    <!--ListView categorie-->
+                    <materialDesign:Card Grid.Row="1" Margin="20,0">
+                        <ListView x:Name="lvCategoria"  Margin="20,20,350,20.4" SelectedItem="{Binding CategoriaSelezionata}" ItemsSource="{Binding ElencoCategorie}" FontSize="12" SelectionChanged="lvCategoria_SelectionChanged">
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn Header="Categoria" DisplayMemberBinding="{Binding CATEGORIA1}"/>
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+                    </materialDesign:Card>
+
+                    <!--Button cambia categorie-->
+                    <Button x:Name="bChangeCat" Grid.Row="1" Height="auto" Margin="0,10,30,10" HorizontalAlignment="Right" Width="307" Background="#FF0D2432" BorderBrush="#FF0D2432" Click="bChangeCat_Click" >
+                        <StackPanel Orientation="Horizontal" Height="30" Width="150">
+                            <materialDesign:PackIcon Kind="SwapHorizontal" Margin="-0,0,2,0" VerticalAlignment="Center"/>
+                            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5,0,0,0"><Run Text="Cambia categoria"/></TextBlock>
+                        </StackPanel>
+                    </Button>
+
+                    <materialDesign:Card x:Name="GridAtleti" Visibility="Collapsed" Grid.Row="2" Margin="20,10,20,10">
+                        <!--DataGrid squadra-->
+                        <Grid>
+                            <StackPanel Margin="20,10,0,10">
+                                <DataGrid x:Name="dgSquadra"
+                                          AutoGenerateColumns="False"
+                                          ColumnWidth="*"
+                                          CanUserSortColumns="False"
+                                          CanUserAddRows="False"
+                                          ItemsSource="{Binding ElencoGiocatori}"
+                                          SelectedItem="{Binding GiocatoreSelezionato}"
+                                          Margin="0,0,0,10"
+                                          VerticalScrollBarVisibility="Visible"
+                                          IsReadOnly="True" 
+                                          ColumnHeaderHeight="48" 
+                                          RowHeight="40" 
+                                          CanUserDeleteRows="False" 
+                                          HorizontalAlignment="Left" 
+                                          Width="637" 
+                                          SelectionChanged="dgSquadra_SelectionChanged">
+                                    <DataGrid.Columns>
+                                        <materialDesign:DataGridTextColumn Binding="{Binding NOME}" Header="Nome" Width="120" IsReadOnly="True"/>
+                                        <materialDesign:DataGridTextColumn Binding="{Binding COGNOME}" Header="Cognome" Width="120" IsReadOnly="True"/>
+                                        <materialDesign:DataGridTextColumn Binding="{Binding PESO}" Header="Peso (KG)" Width="100" IsReadOnly="True"/>
+                                        <materialDesign:DataGridTextColumn Binding="{Binding ALTEZZA}" Header="Altezza (cm)" Width="100" IsReadOnly="True"/>
+                                        <materialDesign:DataGridTextColumn Binding="{Binding RUOLO}" Header="Ruolo" Width="200" IsReadOnly="True"/>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </StackPanel>
+
+                            <StackPanel Grid.Row="2" Margin="684,0,360,0" >
+                                <TextBox x:Name="txtNome" Style="{StaticResource MaterialDesignFilledTextFieldTextBox}" VerticalAlignment="Top" AcceptsReturn="True" TextWrapping="Wrap" MaxWidth="400" materialDesign:HintAssist.Hint="Nome" IsEnabled="False" Margin="10,10,9.4,10" Height="65" Padding="0" Text="{Binding TextNome}" />
+                                <TextBox x:Name="txtCognome" Style="{StaticResource MaterialDesignFilledTextFieldTextBox}" VerticalAlignment="Top" AcceptsReturn="True" TextWrapping="Wrap" MaxWidth="400" materialDesign:HintAssist.Hint="Cognome" IsEnabled="False" Margin="10,10,9.4,10" Height="65" Padding="0" Text="{Binding TextCognome}" />
+                                <TextBox x:Name="txtPeso" Style="{StaticResource MaterialDesignFilledTextFieldTextBox}" VerticalAlignment="Top" AcceptsReturn="True" TextWrapping="Wrap" MaxWidth="400" materialDesign:HintAssist.Hint="Peso (KG)" IsEnabled="False" Margin="10,10,9.4,10" Height="65" Padding="0" Text="{Binding TextPeso}" />
+                                <TextBox x:Name="txtAltezza" Style="{StaticResource MaterialDesignFilledTextFieldTextBox}" VerticalAlignment="Top" AcceptsReturn="True" TextWrapping="Wrap" MaxWidth="400" materialDesign:HintAssist.Hint="Altezza (cm)" IsEnabled="False" Margin="10,10,9.4,10" Height="65" Padding="0" Text="{Binding TextAltezza}" />
+                                <TextBox x:Name="txtRuolo" Style="{StaticResource MaterialDesignFilledTextFieldTextBox}" VerticalAlignment="Top" AcceptsReturn="True" TextWrapping="Wrap" MaxWidth="400" materialDesign:HintAssist.Hint="Ruolo" IsEnabled="False" Margin="10,10,9.4,10" Height="65" Padding="0" Text="{Binding TextRuolo}" />
+                            </StackPanel>
+
+                            <StackPanel Margin="1020,0,-0.4,271.8" Orientation="Vertical">
+                                <Button x:Name="bAddGiocatore" Height="65" Margin="0,10,10,0" HorizontalAlignment="Right" Width="315" BorderBrush="#FF0D2432" Background="#FF0D2432" Click="bAddGiocatore_Click">
+                                    <StackPanel Orientation="Horizontal" Height="20" Width="150">
+                                        <materialDesign:PackIcon Kind="Add" Margin="-0,0,2,0" VerticalAlignment="Center"/>
+                                        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5,0,0,0"><Run Text="Aggiungi giocatore"/></TextBlock>
+                                    </StackPanel>
+                                </Button>
+                                <Button x:Name="bModifica" Height="65" Margin="0,20,10,0" HorizontalAlignment="Right" Width="315" Click="bModifica_Click" Background="#FF0D2432" BorderBrush="#FF0D2432" >
+                                    <StackPanel Orientation="Horizontal" Height="20" Width="150">
+                                        <materialDesign:PackIcon Kind="Edit" Margin="-0,0,2,0" VerticalAlignment="Center"/>
+                                        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5,0,0,0"><Run Text="Modifica giocatore"/></TextBlock>
+                                    </StackPanel>
+                                </Button>
+
+                            </StackPanel>
+
+                            <StackPanel Margin="0,362,-0.4,0" Orientation="Horizontal" HorizontalAlignment="Right" Width="335">
+                                <Button x:Name="bSalva" Height="Auto" Margin="10,0,10.2,14" Width="147.5" Background="#FF62A065" BorderBrush="#FF62A065" Visibility="Collapsed" Command="{Binding CommandAggiorna}" Click="bSalva_Click" IsEnabled="True">
+                                    <StackPanel Orientation="Horizontal" Height="20" Width="66">
+                                        <materialDesign:PackIcon Kind="Check" Margin="-0,0,2,0" VerticalAlignment="Center"/>
+                                        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5,0,0,0"><Run Text="Salva"/></TextBlock>
+                                    </StackPanel>
+                                </Button>
+                                <Button x:Name="bAggiungi" Height="Auto" Margin="10,0,10.2,14" Width="147.5" BorderBrush="#FF0D2432" Visibility="Collapsed" Command="{Binding CommandAggiungi}" Click="bAggiungi_Click" Background="#FF0D2432" IsEnabled="True">
+                                    <StackPanel Orientation="Horizontal" Height="20" Width="90">
+                                        <materialDesign:PackIcon Kind="Check" Margin="0,2,2,2" VerticalAlignment="Center" Width="15"/>
+                                        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5,0,0,0"><Run Text="Aggiungi"/></TextBlock>
+                                    </StackPanel>
+                                </Button>
+                                <Button x:Name="bAnnulla" Height="Auto" Margin="10,0,10.2,14" Width="147.5" Background="#FFBD4747" BorderBrush="#FFBD4747" Visibility="Collapsed" Click="bAnnulla_Click" IsEnabled="True">
+                                    <StackPanel Orientation="Horizontal" Height="20" Width="80">
+                                        <materialDesign:PackIcon Kind="Clear" Margin="-0,0,2,0" VerticalAlignment="Center"/>
+                                        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5,0,0,0"><Run Text="Annulla"/></TextBlock>
+                                    </StackPanel>
+                                </Button>
+                            </StackPanel>
+
+                        </Grid>
+                    </materialDesign:Card>
+
+                </Grid>
+            </Grid>
+        </ScrollViewer>
+
+        <!--Grid Inserisci video-->
+        <Grid x:Name="GridInserisciVideo" Grid.Column="1" Margin="0,50,0,20" Visibility="Visible" Panel.ZIndex="0">
+
+            <Grid.DataContext>
+                <Classi:MoveFile/>
+            </Grid.DataContext>
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="70"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="20,10,20,10">
+                    <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#FF606060" FontStyle="Italic"><Run Text="Home/Inserisci nuovo video"/></TextBlock>
+                </StackPanel>
+
+
+                <materialDesign:Card Grid.Row="1" Margin="20,5,20,5">
+                    <StackPanel  Orientation="Horizontal" Margin="4">
+                        <RadioButton  x:Name="rbPartita"
+                                      Style="{StaticResource MaterialDesignTabRadioButton}"
+                                      Margin="4"
+                                      IsChecked="False"
+                                      Content="Partita" 
+                                      BorderBrush="#FF2196F3" Click="rbPartita_Click"/>
+                        <RadioButton  x:Name="rbAllenamento"
+                                      Style="{StaticResource MaterialDesignTabRadioButton}"
+                                      Margin="4"
+                                      IsChecked="False"
+                                      Content="Allenamento"
+                                      BorderBrush="#FF2196F3" Click="rbAllenamento_Click"/>
+                        <RadioButton  x:Name="rbClip"
+                                      Style="{StaticResource MaterialDesignTabRadioButton}"
+                                      Margin="4"
+                                      IsChecked="False"
+                                      Content="Clip"
+                                      BorderBrush="#FF2196F3" Click="rbClip_Click"/>
+                    </StackPanel>
+                </materialDesign:Card>
+
+
+                <!--Grid inserimento video Partita-->
+                <Grid x:Name="gridPartita" Grid.Row="2" Visibility="Visible">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+
+                    <materialDesign:Card Grid.Column="1" Margin="20.4,5,20.4,0" Height="600" VerticalAlignment="Top">
+
+                        <Grid Margin="0,0,0,0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition Height="150"/>
+                            </Grid.RowDefinitions>
+
+                            <StackPanel Grid.Row="0" Margin="0,30,0,150" Grid.RowSpan="2" HorizontalAlignment="Center">
+                                <ComboBox x:Name="catP" materialDesign:HintAssist.Hint="Categoria" Style="{StaticResource MaterialDesignFilledComboBox}" Margin="10,0,0,10" HorizontalAlignment="Left" Width="315" Height="65" ItemsSource="{Binding ElencoCategorie}" DisplayMemberPath="CATEGORIA1" SelectedItem="{Binding CategoriaSelezionata}" />
+                                <DatePicker x:Name="dateP" materialDesign:HintAssist.Hint="Data Partita" Style="{StaticResource MaterialDesignFilledDatePicker}" Margin="10,0,0,10" HorizontalAlignment="Left" Width="315" Height="65"/>
+                                <TextBox x:Name="avvP" Style="{StaticResource MaterialDesignFilledTextFieldTextBox}" VerticalAlignment="Top" AcceptsReturn="True" TextWrapping="Wrap" MaxWidth="400" materialDesign:HintAssist.Hint="Avversario" IsEnabled="{Binding IsChecked, ElementName=MaterialDesignFilledTextFieldTextBoxEnabledComboBox}" Margin="10,0,0,0" HorizontalAlignment="Left" Width="315" Height="65" Padding="0" />
+                                <TextBox x:Name="noteP" Style="{StaticResource MaterialDesignFilledTextFieldTextBox}" VerticalAlignment="Top" AcceptsReturn="True" TextWrapping="Wrap" MaxWidth="400" materialDesign:HintAssist.Hint="Note" IsEnabled="{Binding IsChecked, ElementName=MaterialDesignFilledTextFieldTextBoxEnabledComboBox}" Margin="10,10,10,10" Height="165" Padding="0" Width="315" />
+                            </StackPanel>
+
+                            <Image Source="/undraw_statistics_ctoq.png" Grid.Row="1" Margin="0,0.4,0,0" HorizontalAlignment="Right" Width="226" />
+
+                        </Grid>
+
+
+                    </materialDesign:Card>
+
+                    <materialDesign:Card Grid.Column="0" Margin="20.4,5,20.2,0" Height="600" VerticalAlignment="Top">
+
+                        <StackPanel  Margin="20">
+
+                            <Grid Height="560" Margin="0,0,0,0">
+
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="300" />
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+
+                                <Image Grid.Row="0" Grid.Column="1" Source="/undraw_online_video_ivvq.png" Height="300" Width="Auto" Stretch="UniformToFill" Margin="0,0,0,0" />
+
+
+
+                                <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="8 0 8 0" VerticalAlignment="Center">
+                                    <Button x:Name="bSelectFile" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" Visibility="Visible" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="10,20,0,0" Background="#FF4FA4FD" BorderBrush="#FF4FA4FD" Width="60" Height="60" Click="bSelectFile_Click">
+                                        <materialDesign:PackIcon Kind="Plus" Width="30"/>
+                                    </Button>
+                                    <Button x:Name="bClearFile" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" Visibility="Collapsed" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="10,20,0,0" Background="#FFFF3026" BorderBrush="#FFFF3026" Width="60" Height="60" Click="bClearFile_Click">
+                                        <materialDesign:PackIcon Kind="Clear" Width="30"/>
+                                    </Button>
+
+                                    <TextBox x:Name="directoryFileTextBox" materialDesign:HintAssist.HelperText="File video" Margin="54,20,54,0" IsReadOnly="True" Width="476" VerticalAlignment="Top" Height="40" Padding="0,5,0,0" />
+
+                                </StackPanel>
+
+                                <Grid Grid.Row="2">
+
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="200"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <StackPanel Grid.Column="0" Orientation="Horizontal" Margin="0,0,0,0" HorizontalAlignment="Left">
+
+                                        <Button x:Name="bNewUploadFileP" Style="{StaticResource MaterialDesignRaisedButton}" Content="Carica nuovo video" Background="#FF0D2432" BorderBrush="#FF0D2432" Margin="2,0" Click="bNewUploadFileP_Click" VerticalAlignment="Top" Height="50" Width="162" HorizontalAlignment="Left" HorizontalContentAlignment="Center" />
+
+                                    </StackPanel>
+
+                                    <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="0,0,0,0" HorizontalAlignment="Right">
+                                        <TextBlock x:Name="txtUploadSuccessP" VerticalAlignment="Center" Margin="0,0,30,0" Foreground="#FF2F7508" FontSize="16" Visibility="{Binding TextUploadSuccess}" >Il video è stato caricato!</TextBlock>
+                                        <TextBlock x:Name="txtUploadUnsuccessP" VerticalAlignment="Center" Margin="0,0,30,0" FontSize="16" Foreground="#FFBD1010" Visibility="{Binding TextUploadUnsuccess}" >Il video non è stato caricato!</TextBlock>
+
+                                        <Button x:Name="bUploadFile" Style="{StaticResource MaterialDesignRaisedButton}" materialDesign:ButtonProgressAssist.Value="-1" materialDesign:ButtonProgressAssist.IsIndicatorVisible="True" materialDesign:ButtonProgressAssist.IsIndeterminate="True" Content="Carica" Margin="2,0" Click="bUploadFile_Click" VerticalAlignment="Top" Height="50" Width="118" HorizontalAlignment="Right" HorizontalContentAlignment="Center" />
+                                    </StackPanel>
+
+
+                                </Grid>
+
+
+                            </Grid>
+
+                        </StackPanel>
+                    </materialDesign:Card>
+
+                </Grid>
+
+                <!--Grid inserimento video Allenamento-->
+                <Grid x:Name="gridAllenamento" Grid.Row="2" Visibility="Collapsed">
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+
+                    <materialDesign:Card Grid.Column="1" Margin="20,5,20,20">
+
+                        <Grid Margin="0,0,0,0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition Height="150"/>
+                            </Grid.RowDefinitions>
+
+                            <StackPanel Grid.Row="0" Margin="0,30,0,150" Grid.RowSpan="2" HorizontalAlignment="Center">
+                                <ComboBox x:Name="catAll" materialDesign:HintAssist.Hint="Categoria" Style="{StaticResource MaterialDesignFilledComboBox}" Margin="10,0,0,10" HorizontalAlignment="Left" Width="315" Height="65" ItemsSource="{Binding ElencoCategorie}" DisplayMemberPath="CATEGORIA1" SelectedItem="{Binding CategoriaSelezionata}" />
+                                <DatePicker x:Name="dateAll" materialDesign:HintAssist.Hint="Data Partita" Style="{StaticResource MaterialDesignFilledDatePicker}" Margin="10,0,0,10" HorizontalAlignment="Left" Width="315" Height="65"/>
+                                <TextBox x:Name="noteAll" Style="{StaticResource MaterialDesignFilledTextFieldTextBox}" VerticalAlignment="Top" AcceptsReturn="True" TextWrapping="Wrap" MaxWidth="400" materialDesign:HintAssist.Hint="Note" IsEnabled="{Binding IsChecked, ElementName=MaterialDesignFilledTextFieldTextBoxEnabledComboBox}" Margin="10,10,10,10" Height="165" Padding="0" Width="315" />
+                            </StackPanel>
+
+                            <Image Source="/undraw_statistics_ctoq.png" Grid.Row="1" Margin="430,0,0,0" />
+
+                        </Grid>
+
+
+                    </materialDesign:Card>
+
+                    <materialDesign:Card Grid.Column="0" Margin="20.4,5,20.2,0" Height="600" VerticalAlignment="Top">
+
+                        <StackPanel  Margin="20">
+
+                            <Grid Height="560" Margin="0,0,0,0">
+
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="300" />
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+
+                                <Image Grid.Row="0" Grid.Column="1" Source="/undraw_online_video_ivvq.png" Height="300" Width="Auto" Stretch="UniformToFill" Margin="0,0,0,0" />
+
+
+
+                                <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="8 0 8 0" VerticalAlignment="Center">
+                                    <Button x:Name="bSelectFileAll" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" Visibility="Visible" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="10,20,0,0" Background="#FF4FA4FD" BorderBrush="#FF4FA4FD" Width="60" Height="60" Click="bSelectFile_Click">
+                                        <materialDesign:PackIcon Kind="Plus" Width="30"/>
+                                    </Button>
+                                    <Button x:Name="bClearFileAll" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" Visibility="Collapsed" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="10,20,0,0" Background="#FFFF3026" BorderBrush="#FFFF3026" Width="60" Height="60" Click="bClearFile_Click">
+                                        <materialDesign:PackIcon Kind="Clear" Width="30"/>
+                                    </Button>
+
+                                    <TextBox x:Name="directoryFileAllenamentoTextBox" materialDesign:HintAssist.HelperText="File video" Margin="54,20,54,0" IsReadOnly="True" Width="476" VerticalAlignment="Top" Height="40" Padding="0,5,0,0" />
+
+                                </StackPanel>
+
+                                <Grid Grid.Row="2">
+
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="200"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <StackPanel Grid.Column="0" Orientation="Horizontal" Margin="0,0,0,0" HorizontalAlignment="Left">
+
+                                        <Button x:Name="bNewUploadFileAll" Style="{StaticResource MaterialDesignRaisedButton}" Content="Carica nuovo video" Background="#FF0D2432" BorderBrush="#FF0D2432" Margin="2,0" Click="bNewUploadFileAll_Click" VerticalAlignment="Top" Height="50" Width="162" HorizontalAlignment="Left" HorizontalContentAlignment="Center" />
+
+                                    </StackPanel>
+
+                                    <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="0,0,0,0" HorizontalAlignment="Right">
+                                        <TextBlock x:Name="txtUploadSuccessAll" VerticalAlignment="Center" Margin="0,0,30,0" Foreground="#FF2F7508" FontSize="16" Visibility="{Binding TextUploadSuccess}" >Il video è stato caricato!</TextBlock>
+                                        <TextBlock x:Name="txtUploadUnsuccessAll" VerticalAlignment="Center" Margin="0,0,30,0" FontSize="16" Foreground="#FFBD1010" Visibility="{Binding TextUploadUnsuccess}" >Il video non è stato caricato!</TextBlock>
+
+                                        <Button x:Name="bUploadFileAll" Style="{StaticResource MaterialDesignRaisedButton}" materialDesign:ButtonProgressAssist.Value="-1" materialDesign:ButtonProgressAssist.IsIndicatorVisible="True" materialDesign:ButtonProgressAssist.IsIndeterminate="True" Content="Carica" Margin="2,0" Click="bUploadFileAll_Click" VerticalAlignment="Top" Height="50" Width="118" HorizontalAlignment="Right" HorizontalContentAlignment="Center" />
+                                    </StackPanel>
+
+
+                                </Grid>
+
+
+                            </Grid>
+
+                        </StackPanel>
+                    </materialDesign:Card>
+
+                </Grid>
+
+                <!--Grid inserimento video Clip-->
+                <Grid x:Name="gridClip" Grid.Row="2" Visibility="Collapsed">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+
+                    <materialDesign:Card Grid.Column="1" Margin="20,5,20,20">
+
+                        <Grid Margin="0,0,0,0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition Height="150"/>
+                            </Grid.RowDefinitions>
+
+                            <StackPanel Grid.Row="0" Margin="0,30,0,150" Grid.RowSpan="2" HorizontalAlignment="Center">
+                                <ComboBox x:Name="catClip" materialDesign:HintAssist.Hint="Categoria" Style="{StaticResource MaterialDesignFilledComboBox}" Margin="10,0,0,10" HorizontalAlignment="Left" Width="315" Height="65" ItemsSource="{Binding ElencoCategorie}" DisplayMemberPath="CATEGORIA1" SelectedItem="{Binding CategoriaSelezionata}" />
+                                <DatePicker x:Name="dateClip" materialDesign:HintAssist.Hint="Data Partita" Style="{StaticResource MaterialDesignFilledDatePicker}" Margin="10,0,0,10" HorizontalAlignment="Left" Width="315" Height="65"/>
+                                <ComboBox x:Name="playerClip" materialDesign:HintAssist.Hint="Giocatore" materialDesign:TextFieldAssist.HasClearButton="True" Style="{StaticResource MaterialDesignFilledComboBox}" Margin="10,0,0,10" HorizontalAlignment="Left" Width="315" Height="65" ItemsSource="{Binding ElencoAtleti}" DisplayMemberPath="NOMECOMPLETO" SelectedItem="{Binding GiocatoreSelezionato}"/>
+                                <TextBlock x:Name="txtPlayerId" Visibility="Collapsed" Text="{Binding GiocatoreSelezionato.ID}"></TextBlock>
+                                <TextBox x:Name="noteClip" Style="{StaticResource MaterialDesignFilledTextFieldTextBox}" VerticalAlignment="Top" AcceptsReturn="True" TextWrapping="Wrap" MaxWidth="400" materialDesign:HintAssist.Hint="Note" IsEnabled="{Binding IsChecked, ElementName=MaterialDesignFilledTextFieldTextBoxEnabledComboBox}" Margin="10,10,10,10" Height="165" Padding="0" Width="315" />
+                            </StackPanel>
+
+                            <Image Source="/undraw_statistics_ctoq.png" Grid.Row="1" Margin="430,0,0,0" />
+
+                        </Grid>
+
+
+                    </materialDesign:Card>
+
+                    <materialDesign:Card Grid.Column="0" Margin="20.4,5,20.2,0" Height="600" VerticalAlignment="Top">
+
+                        <StackPanel  Margin="20">
+
+                            <Grid Height="560" Margin="0,0,0,0">
+
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="300" />
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+
+                                <Image Grid.Row="0" Grid.Column="1" Source="/undraw_online_video_ivvq.png" Height="300" Width="Auto" Stretch="UniformToFill" Margin="0,0,0,0" />
+
+
+
+                                <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="8 0 8 0" VerticalAlignment="Center">
+                                    <Button x:Name="bSelectFileClip" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" Visibility="Visible" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="10,20,0,0" Background="#FF4FA4FD" BorderBrush="#FF4FA4FD" Width="60" Height="60" Click="bSelectFileClip_Click">
+                                        <materialDesign:PackIcon Kind="Plus" Width="30"/>
+                                    </Button>
+                                    <Button x:Name="bClearFileClip" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" Visibility="Collapsed" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="10,20,0,0" Background="#FFFF3026" BorderBrush="#FFFF3026" Width="60" Height="60" Click="bClearFileClip_Click">
+                                        <materialDesign:PackIcon Kind="Clear" Width="30"/>
+                                    </Button>
+
+                                    <TextBox x:Name="directoryFileClipTextBox" materialDesign:HintAssist.HelperText="File video" Margin="54,20,54,0" IsReadOnly="True" Width="476" VerticalAlignment="Top" Height="40" Padding="0,5,0,0" />
+
+                                </StackPanel>
+
+                                <Grid Grid.Row="2">
+
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="200"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <StackPanel Grid.Column="0" Orientation="Horizontal" Margin="0,0,0,0" HorizontalAlignment="Left">
+
+                                        <Button x:Name="bNewUploadFileClip" Style="{StaticResource MaterialDesignRaisedButton}" Content="Carica nuovo video" Background="#FF0D2432" BorderBrush="#FF0D2432" Margin="2,0" Click="bNewUploadFileClip_Click" VerticalAlignment="Top" Height="50" Width="162" HorizontalAlignment="Left" HorizontalContentAlignment="Center" />
+
+                                    </StackPanel>
+
+                                    <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="0,0,0,0" HorizontalAlignment="Right">
+                                        <TextBlock x:Name="txtUploadSuccessClip" VerticalAlignment="Center" Margin="0,0,30,0" Foreground="#FF2F7508" FontSize="16" Visibility="{Binding TextUploadSuccess}" >Il video è stato caricato!</TextBlock>
+                                        <TextBlock x:Name="txtUploadUnsuccessClip" VerticalAlignment="Center" Margin="0,0,30,0" FontSize="16" Foreground="#FFBD1010" Visibility="{Binding TextUploadUnsuccess}" >Il video non è stato caricato!</TextBlock>
+
+                                        <Button x:Name="bUploadFileClip" Style="{StaticResource MaterialDesignRaisedButton}" materialDesign:ButtonProgressAssist.Value="-1" materialDesign:ButtonProgressAssist.IsIndicatorVisible="True" materialDesign:ButtonProgressAssist.IsIndeterminate="True" Content="Carica" Margin="2,0" Click="bUploadFileClip_Click" VerticalAlignment="Top" Height="50" Width="118" HorizontalAlignment="Right" HorizontalContentAlignment="Center" />
+                                    </StackPanel>
+
+
+                                </Grid>
+
+
+                            </Grid>
+
+                        </StackPanel>
+                    </materialDesign:Card>
+
+                </Grid>
+
+            </Grid>
+
+        </Grid>
+
+        <!--Grid Ricerca video-->
+        <ScrollViewer x:Name="GridRicercaVideo" Visibility="Collapsed" Grid.Column="0" Grid.ColumnSpan="2" Margin="70,50,0,0">
+
+            <Grid  Grid.Column="1">
+
+                <Grid.DataContext>
+                    <Classi:FilterVideo/>
+                </Grid.DataContext>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="140"/>
+                    <RowDefinition Height="800"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="20,10,20,10">
+                    <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#FF606060" FontStyle="Italic"><Run Text="Ricerca video"/></TextBlock>
+                </StackPanel>
+
+                <materialDesign:Card Grid.Row="1" Background="{DynamicResource MaterialDesignBackground}" Margin="20,0,20,0">
+                    <StackPanel >
+                        <Expander HorizontalAlignment="Stretch" Header="Filtri" Height="139" Margin="0,0,0.4,0" IsExpanded="True">
+                            <StackPanel Orientation="Horizontal" TextBlock.Foreground="{DynamicResource MaterialDesignBody}" Margin="24,8,24,16">
+                                <ComboBox x:Name="catFiltri" materialDesign:HintAssist.Hint="Categoria" Style="{StaticResource MaterialDesignFilledComboBox}" Margin="0,0,0,0" HorizontalAlignment="Left" Width="315" Height="65" ItemsSource="{Binding FiltroCategorie}" DisplayMemberPath="CATEGORIA1" SelectedItem="{Binding CategoriaFiltrata}" />
+                                <ComboBox x:Name="playerFiltri" materialDesign:HintAssist.Hint="Giocatore" materialDesign:TextFieldAssist.HasClearButton="True" Style="{StaticResource MaterialDesignFilledComboBox}" Margin="10,0,0,0" HorizontalAlignment="Left" Width="315" Height="65" ItemsSource="{Binding FiltroGiocatori}" DisplayMemberPath="NOMECOMPLETO" SelectedItem="{Binding GiocatoreFiltrato}" />
+                                <!--<ToggleButton Style="{StaticResource MaterialDesignSwitchToggleButton}" ToolTip="Default ToggleButton Style" IsChecked="{Binding IsToggleEnable}" />-->
+                                <ComboBox x:Name="tipoVFiltri" materialDesign:HintAssist.Hint="Tipo" materialDesign:TextFieldAssist.HasClearButton="True" Style="{StaticResource MaterialDesignFilledComboBox}" Margin="10,0,0,0" HorizontalAlignment="Left" Width="315" Height="65" SelectedItem="{Binding TipoVideoFiltrato}">
+                                    <ComboBoxItem>Partita</ComboBoxItem>
+                                    <ComboBoxItem>Allenamento</ComboBoxItem>
+                                    <ComboBoxItem>Clip</ComboBoxItem>
+                                </ComboBox>
+                                <Button Margin="40,0,0,0" Height="60" Width="125" Command="{Binding CommandFiltro}">Applica</Button>
+                                <Button x:Name="bPulisciFiltro" Margin="20,0,0,0" Height="60" Width="125" Command="{Binding CommandPulisciFiltro}" Click="bPulisciFiltro_Click">Pulisci filtri</Button>
+                            </StackPanel>
+                        </Expander>
+                    </StackPanel>
+                </materialDesign:Card>
+
+                <!--DataGrid ricerca video-->
+                <materialDesign:Card Grid.Row="2" Margin="20,20,20,20">
+                    <StackPanel>
+                        <Button Margin="20,20,0,0" Width="150" HorizontalAlignment="Left" Command="{Binding CommandAggiorna}">Aggiorna tabella</Button>
+                        <DataGrid x:Name="dgVideo"
+                                  AutoGenerateColumns="False"
+                                  ColumnWidth="*"
+                                  CanUserSortColumns="True"
+                                  CanUserAddRows="False"
+                                  ItemsSource="{Binding ElencoVideo}"
+                                  Margin="20,20,20,20"
+                                  VerticalScrollBarVisibility="Auto"
+                                  IsReadOnly="True" 
+                                  ColumnHeaderHeight="48" 
+                                  RowHeight="40" 
+                                  CanUserDeleteRows="False">
+                            <DataGrid.Columns>
+                                <materialDesign:DataGridTextColumn Binding="{Binding VIDEO1}" Header="Video" Width="200" IsReadOnly="True"/>
+                                <materialDesign:DataGridTextColumn Binding="{Binding CATEGORIA}" Header="Categoria" Width="180" IsReadOnly="True"/>
+                                <materialDesign:DataGridTextColumn Binding="{Binding ANNO}" Header="Anno sportivo" Width="150" IsReadOnly="True"/>
+                                <materialDesign:DataGridTextColumn Binding="{Binding TIPO}" Header="Tipo" Width="150" IsReadOnly="True"/>
+                                <materialDesign:DataGridTextColumn Binding="{Binding ATLETA1.NOMECOMPLETO}" Header="Atleta" Width="150" IsReadOnly="True"/>
+                                <materialDesign:DataGridTextColumn Binding="{Binding URL}" Header="Percorso" Width="700" IsReadOnly="True"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </StackPanel>
+                </materialDesign:Card>
+
+            </Grid>
+
+        </ScrollViewer>
+
+        <!--Grid per il footer-->
+        <Grid Margin="0,0,0,0" Grid.ColumnSpan="2" Grid.RowSpan="2" Height="20" VerticalAlignment="Bottom">
+
+            <materialDesign:Card Background="#FFB4B4B4">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,20,0" VerticalAlignment="Center">
+                    <TextBlock>Versione 1.0</TextBlock>
+                    <TextBlock Margin="10,0,0,0">Server:</TextBlock>
+                    <TextBlock Text="{Binding Database.Connection.DataSource, Mode=OneWay}">
+                        <!--<TextBlock.DataContext>
+                            <Database:DBldgEntities/>
+                        </TextBlock.DataContext>-->
+                    </TextBlock>
+                    <TextBlock Margin="10,0,0,0">Database:</TextBlock>
+                    <TextBlock Text="{Binding Database.Connection.Database, Mode=OneWay}">
+                        <!--<TextBlock.DataContext>
+                            <Database:DBldgEntities/>
+                        </TextBlock.DataContext>-->
+                    </TextBlock>
+                </StackPanel>
+            </materialDesign:Card>
+
+        </Grid>
+
+    </Grid>
+</Window>

@@ -1,0 +1,264 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="DBldgModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="ATLETA">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NOME" Type="nchar" MaxLength="25" Nullable="false" />
+          <Property Name="COGNOME" Type="nchar" MaxLength="25" Nullable="false" />
+          <Property Name="NOMECOMPLETO" Type="nchar" MaxLength="50" Nullable="false" />
+          <Property Name="ALTEZZA" Type="int" />
+          <Property Name="PESO" Type="float" />
+          <Property Name="RUOLO" Type="nchar" MaxLength="16" />
+          <Property Name="CATEGORIA" Type="nchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CATEGORIA">
+          <Key>
+            <PropertyRef Name="CATEGORIA" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CATEGORIA" Type="nchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="VIDEO">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="VIDEO" Type="nchar" MaxLength="50" Nullable="false" />
+          <Property Name="URL" Type="nchar" MaxLength="150" Nullable="false" />
+          <Property Name="TIPO" Type="nchar" MaxLength="30" Nullable="false" />
+          <Property Name="DATA" Type="date" Nullable="false" />
+          <Property Name="CATEGORIA" Type="nchar" MaxLength="50" Nullable="false" />
+          <Property Name="ANNO" Type="nchar" MaxLength="10" Nullable="false" />
+          <Property Name="MESE" Type="nchar" MaxLength="30" Nullable="false" />
+          <Property Name="ATLETA" Type="int" />
+          <Property Name="AVVERSARIO" Type="nchar" MaxLength="50" />
+          <Property Name="NOTE" Type="nchar" MaxLength="500" />
+        </EntityType>
+        <Association Name="FK_ATLETA_CATEGORIA">
+          <End Role="CATEGORIA" Type="Self.CATEGORIA" Multiplicity="1" />
+          <End Role="ATLETA" Type="Self.ATLETA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CATEGORIA">
+              <PropertyRef Name="CATEGORIA" />
+            </Principal>
+            <Dependent Role="ATLETA">
+              <PropertyRef Name="CATEGORIA" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_VIDEO_ATLETA">
+          <End Role="ATLETA" Type="Self.ATLETA" Multiplicity="0..1" />
+          <End Role="VIDEO" Type="Self.VIDEO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ATLETA">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="VIDEO">
+              <PropertyRef Name="ATLETA" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_VIDEO_CATEGORIA">
+          <End Role="CATEGORIA" Type="Self.CATEGORIA" Multiplicity="1" />
+          <End Role="VIDEO" Type="Self.VIDEO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CATEGORIA">
+              <PropertyRef Name="CATEGORIA" />
+            </Principal>
+            <Dependent Role="VIDEO">
+              <PropertyRef Name="CATEGORIA" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="DBldgModelStoreContainer">
+          <EntitySet Name="ATLETA" EntityType="Self.ATLETA" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CATEGORIA" EntityType="Self.CATEGORIA" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="VIDEO" EntityType="Self.VIDEO" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_ATLETA_CATEGORIA" Association="Self.FK_ATLETA_CATEGORIA">
+            <End Role="CATEGORIA" EntitySet="CATEGORIA" />
+            <End Role="ATLETA" EntitySet="ATLETA" />
+          </AssociationSet>
+          <AssociationSet Name="FK_VIDEO_ATLETA" Association="Self.FK_VIDEO_ATLETA">
+            <End Role="ATLETA" EntitySet="ATLETA" />
+            <End Role="VIDEO" EntitySet="VIDEO" />
+          </AssociationSet>
+          <AssociationSet Name="FK_VIDEO_CATEGORIA" Association="Self.FK_VIDEO_CATEGORIA">
+            <End Role="CATEGORIA" EntitySet="CATEGORIA" />
+            <End Role="VIDEO" EntitySet="VIDEO" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="DBldgModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="ATLETA">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NOME" Type="String" MaxLength="25" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="COGNOME" Type="String" MaxLength="25" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="ALTEZZA" Type="Int32" />
+          <Property Name="PESO" Type="Double" />
+          <Property Name="RUOLO" Type="String" MaxLength="16" FixedLength="true" Unicode="true" />
+          <Property Name="CATEGORIA" Type="String" MaxLength="50" FixedLength="true" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="CATEGORIA1" Relationship="Self.FK_ATLETA_CATEGORIA" FromRole="ATLETA" ToRole="CATEGORIA" />
+          <NavigationProperty Name="VIDEO" Relationship="Self.FK_VIDEO_ATLETA" FromRole="ATLETA" ToRole="VIDEO" />
+          <Property Name="NOMECOMPLETO" Type="String" Nullable="false" MaxLength="50" FixedLength="true" Unicode="true" />
+        </EntityType>
+        <EntityType Name="CATEGORIA">
+          <Key>
+            <PropertyRef Name="CATEGORIA1" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CATEGORIA1" Type="String" MaxLength="50" FixedLength="true" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="ATLETA" Relationship="Self.FK_ATLETA_CATEGORIA" FromRole="CATEGORIA" ToRole="ATLETA" />
+          <NavigationProperty Name="VIDEO" Relationship="Self.FK_VIDEO_CATEGORIA" FromRole="CATEGORIA" ToRole="VIDEO" />
+        </EntityType>
+        <EntityType Name="VIDEO">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="VIDEO1" Type="String" MaxLength="50" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="URL" Type="String" MaxLength="150" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="TIPO" Type="String" MaxLength="30" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="DATA" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="CATEGORIA" Type="String" MaxLength="50" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="ANNO" Type="String" Nullable="false" MaxLength="10" Unicode="true" FixedLength="true" />
+          <Property Name="MESE" Type="String" MaxLength="30" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="ATLETA" Type="Int32" />
+          <Property Name="AVVERSARIO" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
+          <Property Name="NOTE" Type="String" MaxLength="500" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="ATLETA1" Relationship="Self.FK_VIDEO_ATLETA" FromRole="VIDEO" ToRole="ATLETA" />
+          <NavigationProperty Name="CATEGORIA1" Relationship="Self.FK_VIDEO_CATEGORIA" FromRole="VIDEO" ToRole="CATEGORIA" />
+        </EntityType>
+        <Association Name="FK_ATLETA_CATEGORIA">
+          <End Role="CATEGORIA" Type="Self.CATEGORIA" Multiplicity="1" />
+          <End Role="ATLETA" Type="Self.ATLETA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CATEGORIA">
+              <PropertyRef Name="CATEGORIA1" />
+            </Principal>
+            <Dependent Role="ATLETA">
+              <PropertyRef Name="CATEGORIA" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_VIDEO_ATLETA">
+          <End Role="ATLETA" Type="Self.ATLETA" Multiplicity="0..1" />
+          <End Role="VIDEO" Type="Self.VIDEO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ATLETA">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="VIDEO">
+              <PropertyRef Name="ATLETA" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_VIDEO_CATEGORIA">
+          <End Role="CATEGORIA" Type="Self.CATEGORIA" Multiplicity="1" />
+          <End Role="VIDEO" Type="Self.VIDEO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CATEGORIA">
+              <PropertyRef Name="CATEGORIA1" />
+            </Principal>
+            <Dependent Role="VIDEO">
+              <PropertyRef Name="CATEGORIA" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="DBldgEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="ATLETA" EntityType="Self.ATLETA" />
+          <EntitySet Name="CATEGORIA" EntityType="Self.CATEGORIA" />
+          <EntitySet Name="VIDEO" EntityType="Self.VIDEO" />
+          <AssociationSet Name="FK_ATLETA_CATEGORIA" Association="Self.FK_ATLETA_CATEGORIA">
+            <End Role="CATEGORIA" EntitySet="CATEGORIA" />
+            <End Role="ATLETA" EntitySet="ATLETA" />
+          </AssociationSet>
+          <AssociationSet Name="FK_VIDEO_ATLETA" Association="Self.FK_VIDEO_ATLETA">
+            <End Role="ATLETA" EntitySet="ATLETA" />
+            <End Role="VIDEO" EntitySet="VIDEO" />
+          </AssociationSet>
+          <AssociationSet Name="FK_VIDEO_CATEGORIA" Association="Self.FK_VIDEO_CATEGORIA">
+            <End Role="CATEGORIA" EntitySet="CATEGORIA" />
+            <End Role="VIDEO" EntitySet="VIDEO" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="DBldgModelStoreContainer" CdmEntityContainer="DBldgEntities">
+          <EntitySetMapping Name="ATLETA">
+            <EntityTypeMapping TypeName="DBldgModel.ATLETA">
+              <MappingFragment StoreEntitySet="ATLETA">
+                <ScalarProperty Name="NOMECOMPLETO" ColumnName="NOMECOMPLETO" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="NOME" ColumnName="NOME" />
+                <ScalarProperty Name="COGNOME" ColumnName="COGNOME" />
+                <ScalarProperty Name="ALTEZZA" ColumnName="ALTEZZA" />
+                <ScalarProperty Name="PESO" ColumnName="PESO" />
+                <ScalarProperty Name="RUOLO" ColumnName="RUOLO" />
+                <ScalarProperty Name="CATEGORIA" ColumnName="CATEGORIA" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CATEGORIA">
+            <EntityTypeMapping TypeName="DBldgModel.CATEGORIA">
+              <MappingFragment StoreEntitySet="CATEGORIA">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="CATEGORIA1" ColumnName="CATEGORIA" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="VIDEO">
+            <EntityTypeMapping TypeName="DBldgModel.VIDEO">
+              <MappingFragment StoreEntitySet="VIDEO">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="VIDEO1" ColumnName="VIDEO" />
+                <ScalarProperty Name="URL" ColumnName="URL" />
+                <ScalarProperty Name="TIPO" ColumnName="TIPO" />
+                <ScalarProperty Name="DATA" ColumnName="DATA" />
+                <ScalarProperty Name="CATEGORIA" ColumnName="CATEGORIA" />
+                <ScalarProperty Name="ANNO" ColumnName="ANNO" />
+                <ScalarProperty Name="MESE" ColumnName="MESE" />
+                <ScalarProperty Name="ATLETA" ColumnName="ATLETA" />
+                <ScalarProperty Name="AVVERSARIO" ColumnName="AVVERSARIO" />
+                <ScalarProperty Name="NOTE" ColumnName="NOTE" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Nessuno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
